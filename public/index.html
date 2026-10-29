@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Photobooth LDR</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- LOBBY -->
+  <section id="lobby" class="lobby">
+    <div class="card">
+      <h1>📸 Photobooth LDR</h1>
+      <p class="sub">Foto berdua walau beda kota. Video live, pilih background, download hasilnya.</p>
+
+      <label>Namamu
+        <input id="nameInput" maxlength="20" placeholder="contoh: Dina" />
+      </label>
+
+      <div class="row">
+        <button id="btnCreate" class="primary">Buat Room Baru</button>
+      </div>
+
+      <div class="divider"><span>atau gabung</span></div>
+
+      <div class="row">
+        <input id="roomInput" maxlength="12" placeholder="Kode room" style="text-transform:uppercase" />
+        <button id="btnJoin">Gabung</button>
+      </div>
+      <p id="lobbyMsg" class="msg"></p>
+    </div>
+  </section>
+
+  <!-- BOOTH -->
+  <section id="booth" class="booth hidden">
+    <header class="topbar">
+      <div>
+        <strong>Room: <span id="roomLabel">-</span></strong>
+        <span id="statusText" class="status">Menghubungkan...</span>
+      </div>
+      <div class="top-actions">
+        <button id="btnCopy">🔗 Salin Link</button>
+        <button id="btnLeave" class="danger">Keluar</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <div class="panel" id="panelLocal">
+            <canvas id="localCanvas" width="640" height="480"></canvas>
+            <span class="tag" id="labelLocal">Kamu</span>
+          </div>
+          <div class="panel" id="panelRemote">
+            <video id="remoteVideo" autoplay playsinline></video>
+            <div class="waiting" id="waiting">Menunggu pasangan masuk...<br /><small>Kirim link room ke pasanganmu</small></div>
+            <span class="tag" id="labelRemote">Pasangan</span>
+          </div>
+          <div id="countdown" class="countdown"></div>
+          <div id="flash" class="flash"></div>
+        </div>
+
+        <div class="controls">
+          <label class="inline">Jumlah foto
+            <select id="shotCount">
+              <option value="1">1 foto</option>
+              <option value="3" selected>3 foto</option>
+              <option value="4">4 foto</option>
+            </select>
+          </label>
+          <button id="btnShoot" class="primary big">📷 Ambil Foto</button>
+          <button id="btnMic">🎤 Mic: On</button>
+          <button id="btnCam">📹 Kamera: On</button>
+        </div>
+        <p id="shotInfo" class="msg"></p>
+      </div>
+
+      <aside class="side">
+        <h3>Background</h3>
+        <p class="hint">Background berlaku untuk kalian berdua.</p>
+        <div id="bgGrid" class="bg-grid"></div>
+        <label class="upload">
+          🖼️ Upload background sendiri
+          <input type="file" id="uploadBg" accept="image/*" hidden />
+        </label>
+      </aside>
+    </main>
+  </section>
+
+  <!-- HASIL FOTO -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-card">
+      <h2>Hasil Fotomu ❤️</h2>
+      <div class="result-wrap"><canvas id="resultCanvas"></canvas></div>
+      <div class="result-opts">
+        <label class="inline">Warna frame <input type="color" id="frameColor" value="#ffe3ec" /></label>
+        <label class="inline grow">Caption <input id="captionInput" maxlength="40" value="Love from afar" /></label>
+      </div>
+      <div class="row">
+        <button id="btnDownload" class="primary">⬇️ Download PNG</button>
+        <button id="btnRetake">Ulangi</button>
+        <button id="btnClose">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- sumber kamera (disembunyikan) -->
+  <video id="srcVideo" autoplay playsinline muted style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none"></video>
+
+  <!-- MediaPipe Selfie Segmentation (untuk ganti background) -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
+  <script src="app.js"></script>
+</body>
+</html>
